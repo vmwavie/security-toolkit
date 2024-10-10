@@ -1,7 +1,7 @@
 {
-  "name": "node-two-auth",
+  "name": "security-toolkit",
   "version": "1.0.0",
-  "description": "A nodejs library for totp integration",
+  "description": "A library for implementing multiples security measures in a nodejs application",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
@@ -14,7 +14,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "github.com/vmwavie/node-two-auth"
+    "url": "github.com/vmwavie/security-toolkit"
   },
   "keywords": [
     "two-auth",
