@@ -1,16 +1,19 @@
 {
   "name": "security-toolkit",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A library for implementing multiples security measures in a nodejs application",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "tsc",
+    "build": "webpack --mode=production --node-env=production",
+    "build:dev": "webpack --mode=development",
+    "build:prod": "webpack --mode=production --node-env=production",
     "start": "ts-node src/tests/index.ts",
-    "prepare": "npm run build",
     "lint": "eslint . --ext .ts",
     "lint:fix": "eslint . --ext .ts --fix",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "watch": "webpack --watch",
+    "serve": "webpack serve"
   },
   "repository": {
     "type": "git",
@@ -25,12 +28,23 @@
   "license": "ISC",
   "devDependencies": {
     "@types/node": "^22.7.5",
+    "@types/webpack": "^5.28.5",
     "@typescript-eslint/eslint-plugin": "^8.8.1",
     "@typescript-eslint/parser": "^8.8.1",
+    "@webpack-cli/generators": "^3.0.7",
+    "clean-webpack-plugin": "^4.0.0",
+    "copy-webpack-plugin": "^12.0.2",
     "crypto": "^1.0.1",
+    "declaration-bundler-webpack-plugin": "^1.0.3",
     "eslint": "^9.12.0",
     "eslint-config-prettier": "^9.1.0",
+    "prettier": "^3.3.3",
+    "ts-loader": "^9.5.1",
     "ts-node": "^10.9.2",
-    "typescript": "^5.6.3"
+    "typescript": "^5.6.3",
+    "webpack": "^5.95.0",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^5.1.0",
+    "wepack-cli": "^0.0.1-security"
   }
 }
