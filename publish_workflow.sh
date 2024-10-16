@@ -58,6 +58,7 @@ npm run build
 
 mv dist/* temporary-folder/
 cp package.json temporary-folder/
+cp tsconfig.json  temporary-folder/
 git add .
 git commit -m "[build]: update build of the project to version $new_version"
 git push
