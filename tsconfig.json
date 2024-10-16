@@ -7,8 +7,10 @@
     "rootDir": "./src",
     "strict": true,
     "declaration": true,
+    "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true,
     "baseUrl": "src"
   },
   "include": ["src/**/*"],
-  "exclude": ["node_modules", "**/*.spec.ts"]
+  "exclude": ["node_modules", "dist"]
 }
