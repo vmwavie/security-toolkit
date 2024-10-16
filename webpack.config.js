@@ -2,18 +2,10 @@ const path = require("path");
 
 const isProduction = process.env.NODE_ENV == "production";
 
-const config = {
+const commonConfig = {
   entry: {
     index: path.resolve(__dirname, "src/index.ts"),
   },
-  output: {
-    chunkFilename: "[name].js",
-    filename: "[name].js",
-    path: path.resolve(__dirname, "dist"),
-    libraryTarget: "umd",
-    globalObject: "this",
-  },
-  plugins: [],
   module: {
     rules: [
       {
@@ -31,13 +23,45 @@ const config = {
       stream: require.resolve("stream-browserify"),
     },
   },
+  plugins: [],
+};
+
+const commonJSConfig = {
+  ...commonConfig,
+  output: {
+    chunkFilename: "[name].js",
+    filename: "[name].js",
+    path: path.resolve(__dirname, "dist"),
+    libraryTarget: "umd",
+    globalObject: "this",
+    library: {
+      type: "commonjs2",
+    },
+  },
+};
+
+const esmConfig = {
+  ...commonConfig,
+  output: {
+    chunkFilename: "[name].esm.js",
+    filename: "[name].esm.js",
+    path: path.resolve(__dirname, "dist"),
+    library: {
+      type: "module",
+    },
+  },
+  experiments: {
+    outputModule: true,
+  },
 };
 
 module.exports = () => {
   if (isProduction) {
-    config.mode = "production";
+    commonJSConfig.mode = "production";
+    esmConfig.mode = "production";
   } else {
-    config.mode = "development";
+    commonJSConfig.mode = "development";
+    esmConfig.mode = "development";
   }
-  return config;
+  return [commonJSConfig, esmConfig];
 };
