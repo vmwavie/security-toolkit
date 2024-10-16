@@ -1,19 +1,12 @@
 import { encode, decode } from "../crypt/index";
 import * as crypto from "crypto";
 
-const TIME_STEP = 30;
-
-/**
- * This function should create the secret in base32 format.
- *
- * @returns string - The secret in base32 format
- */
-function generateSecret(secret: string = ""): string {
-  // if (secret) {
-  //   return decode(secret);
-  // }
-
+function generateSecret(): string {
   return encode(crypto.randomBytes(15).toString("binary"));
+}
+
+function decodeSecret(secret: string): Buffer {
+  return decode(secret);
 }
 
 function generateCode(secret: string, timeStep: number, haveWindow: boolean): string {
@@ -21,7 +14,7 @@ function generateCode(secret: string, timeStep: number, haveWindow: boolean): st
 
   if (!haveWindow) {
     const currentTime = Math.floor(Date.now() / 1000);
-    timeStep = Math.floor(currentTime / TIME_STEP);
+    timeStep = Math.floor(currentTime / timeStep);
   }
 
   const timeBytes = Buffer.alloc(8);
@@ -45,12 +38,17 @@ function generateCode(secret: string, timeStep: number, haveWindow: boolean): st
   return otp.toString().padStart(6, "0");
 }
 
-function validateUserCode(secret: string, code: string, windowSize: number): boolean {
+function validateUserCode(
+  secret: string,
+  code: string,
+  timeStepBase: number,
+  windowSize: number
+): boolean {
   const normalizedCode = code.replace(/ /g, "").replace(".", "").replace("-", "").replace(",", "");
   const currentTime = Math.floor(Date.now() / 1000);
 
   for (let i = -windowSize; i <= windowSize; i++) {
-    const timeStep = Math.floor(currentTime / TIME_STEP) + i;
+    const timeStep = Math.floor(currentTime / timeStepBase) + i;
     const serverCode = generateCode(secret, timeStep, true);
     if (serverCode === normalizedCode) {
       return true;
@@ -60,11 +58,8 @@ function validateUserCode(secret: string, code: string, windowSize: number): boo
   return false;
 }
 
-function generateQRCodeURI(secret: string): string {
-  const companyName = "Hermesus";
-  const userName = "vmwavie";
-
+function generateQRCodeURI(secret: string, companyName: string, userName: string): string {
   return `otpauth://totp/${userName}?secret=${secret}&issuer=${companyName}`;
 }
 
-export { generateSecret, generateCode, generateQRCodeURI, validateUserCode };
+export { generateSecret, decodeSecret, generateCode, generateQRCodeURI, validateUserCode };
