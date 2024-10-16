@@ -32,20 +32,25 @@ printf "\n"
 printf '%s%s%s%s%s%s%s' "${CRE}" "${text}"
 }
 
-
 logo "Welcome ${username}!"
 
 printf '\n%s%sYou wanna to proceed with this? This process should publish the security-toolkit to npm.%s\n\n' "${BLD}" "${CRE}" "${CNC}"
 
 while true; do
-	read -rp "Do you wish to continue? [y/N]: " yn
-		case $yn in
-			[Yy]* ) break;;
-			[Nn]* ) exit;;
-			* ) printf " Error: just write 'y' or 'n'\n\n";;
-		esac
-    done
+    read -rp "Do you wish to continue? [y/N]: " yn
+        case $yn in
+            [Yy]* ) break;;
+            [Nn]* ) exit;;
+            * ) printf " Error: just write 'y' or 'n'\n\n";;
+        esac
+done
 clear
+
+current_version=$(jq -r '.version' package.json)
+IFS='.' read -r -a version_parts <<< "$current_version"
+version_parts[2]=$((version_parts[2] + 1))
+new_version="${version_parts[0]}.${version_parts[1]}.${version_parts[2]}"
+jq --arg new_version "$new_version" '.version = $new_version' package.json > package.tmp.json && mv package.tmp.json package.json
 
 rm -rf temporary-folder/
 mkdir temporary-folder
@@ -54,10 +59,11 @@ npm run build
 mv dist/* temporary-folder/
 cp package.json temporary-folder/
 git add .
-git commit -m "[build]: update build of the project"
+git commit -m "[build]: update build of the project to version $new_version"
 git push
 
 cd temporary-folder/
+
 npm publish
 
 cd ..
