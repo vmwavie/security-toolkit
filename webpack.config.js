@@ -4,7 +4,7 @@ const isProduction = process.env.NODE_ENV == "production";
 
 const config = {
   entry: {
-    mylib: path.resolve(__dirname, "src/index.ts"),
+    index: path.resolve(__dirname, "src/index.ts"),
   },
   output: {
     chunkFilename: "[name].js",
