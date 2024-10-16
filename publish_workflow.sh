@@ -63,6 +63,7 @@ git commit -m "[build]: update build of the project to version $new_version"
 git push
 
 cd temporary-folder/
+npm i
 
 npm publish
 
