@@ -1,8 +1,8 @@
 /**
  * This function decodes a Base32 encoded string into a buffer.
  *
- * @param data - The Base32 encoded string
- * @returns Buffer - The decoded buffer
+ * @param {data} data - The Base32 encoded string
+ * @returns {Buffer} The decoded buffer
  */
 function decode(data: string): Buffer {
   const replacements: { [key: string]: string } = {

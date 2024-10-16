@@ -2,9 +2,10 @@ const BASE32_MAP: string[] = [..."ABCDEFGHIJKLMNOPQRSTUVWXYZ234567"];
 
 /**
  * This function encodes a given string into a Base32 encoded string.
- * (to-do debugger and describe more about the context that this function is used)
  *
- * @return string - The Base32 encoded string
+ * @param {string} data - The string to be encoded into Base32
+ *
+ * @return {string} The Base32 encoded string
  */
 function base32Encode(data: string): string {
   const to_binary = (char: string): string => char.charCodeAt(0).toString(2).padStart(8, "0");
