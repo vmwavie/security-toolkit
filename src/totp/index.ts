@@ -2,9 +2,17 @@ import { encode, decode } from "../crypt/index";
 import * as crypto from "crypto";
 
 function generateSecret(): string {
-  return encode(crypto.randomBytes(15).toString("binary"));
+  if (typeof window !== "undefined" && window.crypto && window.crypto.getRandomValues) {
+    const array = new Uint8Array(15);
+    window.crypto.getRandomValues(array);
+    return encode(String.fromCharCode.apply(null, Array.from(array)));
+  } else if (typeof require !== "undefined") {
+    const crypto = require("crypto");
+    return encode(crypto.randomBytes(15).toString("binary"));
+  } else {
+    throw new Error("No secure random number generator available");
+  }
 }
-
 function decodeSecret(secret: string): Buffer {
   return decode(secret);
 }
