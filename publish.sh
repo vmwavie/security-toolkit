@@ -47,18 +47,21 @@ while true; do
     done
 clear
 
+rm -rf temporary-folder/
 mkdir temporary-folder
 npm run build
-sleep 10
+
 mv dist/* temporary-folder/
 cp package.json temporary-folder/
 git add .
 git commit -m "[build]: update build of the project"
 git push
-sleep 10
+
 cd temporary-folder/
 npm publish
-sleep 10
+
+cd ..
+
 rm -rf temporary-folder/
 
 logo "The process has been completed successfully!"
