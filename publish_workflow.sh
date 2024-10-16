@@ -58,7 +58,6 @@ npm run build
 
 mv dist/* temporary-folder/
 cp package.json temporary-folder/
-cp tsconfig.json  temporary-folder/
 git add .
 git commit -m "[build]: update build of the project to version $new_version"
 git push
@@ -70,6 +69,6 @@ npm publish
 
 cd ..
 
-#rm -rf temporary-folder/
+# rm -rf temporary-folder/
 
 logo "The process has been completed successfully!"
