@@ -68,6 +68,6 @@ npm publish
 
 cd ..
 
-rm -rf temporary-folder/
+#rm -rf temporary-folder/
 
 logo "The process has been completed successfully!"
