@@ -9,6 +9,9 @@ const config = {
   output: {
     chunkFilename: "[name].js",
     filename: "[name].js",
+    path: path.resolve(__dirname, "dist"),
+    libraryTarget: "umd",
+    globalObject: "this",
   },
   plugins: [],
   module: {
@@ -21,7 +24,7 @@ const config = {
     ],
   },
   resolve: {
-    extensions: [".ts"],
+    extensions: [".ts", ".js"],
     fallback: { crypto: false },
   },
 };
