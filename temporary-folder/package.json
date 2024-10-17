@@ -1,10 +1,11 @@
 {
   "name": "security-toolkit",
-  "version": "1.0.17",
+  "version": "1.0.18",
   "description": "A library for implementing multiples security measures in a nodejs application",
   "main": "index.js",
   "module": "index.esm.js",
   "types": "index.d.ts",
+  "homepage": "https://github.com/vmwavie/security-toolkit",
   "scripts": {
     "build": "webpack --mode=production --node-env=production",
     "build:dev": "webpack --mode=development",
@@ -23,7 +24,14 @@
   "keywords": [
     "two-auth",
     "2auth",
-    "auth"
+    "auth",
+    "0auth",
+    "security",
+    "security-toolkit",
+    "security pack",
+    "auth duas etapas",
+    "two factor authentication",
+    "segurança"
   ],
   "author": "vmwavie",
   "license": "ISC",
