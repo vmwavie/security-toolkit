@@ -53,4 +53,4 @@ const securityToolkit = new SecurityToolKit({
 
 #### more features coming soon...
 
-#### You can view the license for this code [heere](https://raw.githubusercontent.com/vmwavie/security-toolkit/refs/heads/main/LICENSE.md).
+#### You can view the license for this code [here](https://raw.githubusercontent.com/vmwavie/security-toolkit/refs/heads/main/LICENSE.md).
