@@ -20,11 +20,11 @@ jobs:
       - name: 🤝 Publish NPM
         uses: google-github-actions/release-please-action@v3
         if: github.ref == 'refs/heads/main'
-        with:
-          token: ${{ secrets.PAT }}
-          release-type: node
-          package-name: security-toolkit
-          changelog-path: "CHANGELOG.md"
+        # with:
+        #   token: ${{ secrets.PAT }}
+        #   release-type: node
+        #   package-name: security-toolkit
+        #   changelog-path: "CHANGELOG.md"
 
       - name: ➕ Actions - Checkout
         uses: actions/checkout@v4
