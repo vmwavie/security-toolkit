@@ -16,10 +16,14 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     name: Publish NPM
-    if: github.ref == 'refs/heads/main'
     steps:
       - name: 🤝 Publish NPM
         uses: google-github-actions/release-please-action@v3
+        if: github.ref == 'refs/heads/main'
+        with:
+          token: ${{ secrets.PAT }}
+          release-type: node
+
       - name: ➕ Actions - Checkout
         uses: actions/checkout@v4
 
