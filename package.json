@@ -22,7 +22,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "github.com/vmwavie/security-toolkit"
+    "url": "https://github.com/vmwavie/security-toolkit"
   },
   "keywords": [
     "two-auth",
