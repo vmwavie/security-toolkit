@@ -34,7 +34,7 @@ jobs:
           registry-url: "https://registry.npmjs.org"
 
       - name: 📦 Installing Dependencies
-        run: npm ci
+        run: npm i
 
       - name: 🧪 Testing Security Toolkit
         run: npm run test
