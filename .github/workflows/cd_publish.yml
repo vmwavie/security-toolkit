@@ -19,7 +19,7 @@ jobs:
     steps:
       - name: 🤝 Publish NPM
         uses: google-github-actions/release-please-action@v3
-        id: release
+        if: github.ref == 'refs/heads/main'
         with:
           token: ${{ secrets.PAT }}
           release-type: node
