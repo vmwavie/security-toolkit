@@ -1,5 +1,6 @@
 <p align="center">
-  <img width="96px" src="https://raw.githubusercontent.com/vmwavie/security-toolkit/refs/heads/main/.github/assets/encrypted.png" />
+  <!-- <img width="96px" src="https://raw.githubusercontent.com/vmwavie/security-toolkit/refs/heads/main/.github/assets/security-toolkit.svg" /> -->
+  <img width="256px" src="./.github/assets/security-toolkit.svg" />
   <h1 align="center">Security Toolkit</h1>
 </p>
 
