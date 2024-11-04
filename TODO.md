@@ -1,6 +1,6 @@
 - TWO FACTOR
   [x] TOTP
-  [-] HOTP
+  [x] HOTP
   [-] CODE FOR SMS/EMAIL
   [-] BIOMETRIC AUTHENTICATION
 
