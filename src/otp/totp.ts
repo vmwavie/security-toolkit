@@ -1,20 +1,5 @@
-import { createHmac, randomBytes } from "crypto";
-import { encode, decode } from "../crypt/index";
-
-function generateSecret(): string {
-  if (typeof window !== "undefined" && window.crypto && window.crypto.getRandomValues) {
-    const array = new Uint8Array(15);
-    window.crypto.getRandomValues(array);
-    return encode(String.fromCharCode.apply(null, Array.from(array)));
-  } else if (typeof require !== "undefined") {
-    return encode(randomBytes(15).toString("binary"));
-  } else {
-    throw new Error("No secure random number generator available");
-  }
-}
-function decodeSecret(secret: string): Buffer {
-  return decode(secret);
-}
+import { createHmac } from "crypto";
+import { decode } from "../crypt/index";
 
 function generateCode(secret: string, timeStep: number, haveWindow: boolean): string {
   const decodedSecret = decode(secret);
@@ -65,8 +50,4 @@ function validateUserCode(
   return false;
 }
 
-function generateQRCodeURI(secret: string, companyName: string, userName: string): string {
-  return `otpauth://totp/${userName}?secret=${secret}&issuer=${companyName}`;
-}
-
-export { generateSecret, decodeSecret, generateCode, generateQRCodeURI, validateUserCode };
+export { generateCode, validateUserCode };

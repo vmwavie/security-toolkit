@@ -1,12 +1,10 @@
-import SecurityToolKit from "../index";
-import { Constructor } from "../totp/types/index";
+import SecurityToolKit from "../../../index";
 
-describe("totp", () => {
+describe("otp", () => {
   let toolkit: SecurityToolKit;
 
   beforeEach(() => {
-    const config: Constructor = { TOTP: { timeStep: 30, window: 30 } };
-    toolkit = new SecurityToolKit(config);
+    toolkit = new SecurityToolKit({}, {});
   });
 
   test("should generate a secret", () => {
@@ -19,17 +17,6 @@ describe("totp", () => {
     const secret = toolkit.generateSecret();
     const decoded = toolkit.decodeSecret(secret);
     expect(decoded).toBeInstanceOf(Buffer);
-  });
-
-  test("should generate and validate a code", () => {
-    const secret = toolkit.generateSecret();
-    const code = toolkit.generateCode(secret);
-
-    expect(typeof code).toBe("string");
-    expect(code).toHaveLength(6);
-
-    const isValid = toolkit.validateUserCode(secret, code);
-    expect(isValid).toBe(true);
   });
 
   test("should generate a QR code URI", () => {
