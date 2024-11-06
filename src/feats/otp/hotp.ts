@@ -1,5 +1,5 @@
 import { createHmac } from "crypto";
-import { decode } from "../crypt/index";
+import { decode } from "../../helpers/crypt/index";
 
 function generateCode(secret: string, counter: number): string {
   const decodedSecret = decode(secret);

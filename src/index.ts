@@ -6,7 +6,7 @@ import {
   HOTP_validateUserCode,
   TOTP_generateCode,
   TOTP_validateUserCode,
-} from "./otp/index";
+} from "./feats/otp/index";
 
 class SecurityToolKit {
   generateSecret: () => string;

@@ -1,5 +1,5 @@
 import { randomBytes } from "crypto";
-import { encode, decode } from "../crypt/index";
+import { encode, decode } from "../../helpers/crypt/index";
 
 function generateSecret(): string {
   if (typeof window !== "undefined" && window.crypto && window.crypto.getRandomValues) {
