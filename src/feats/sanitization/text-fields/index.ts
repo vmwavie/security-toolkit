@@ -61,4 +61,4 @@ function sanitizeSQLInjection(input: string): {
   };
 }
 
-export { sanitizeSQLInjection };
+export { sanitizeSQLInjection, sanitizeXSSInjection };
