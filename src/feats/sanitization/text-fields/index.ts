@@ -61,4 +61,12 @@ function sanitizeSQLInjection(input: string): {
   };
 }
 
-export { sanitizeSQLInjection, sanitizeXSSInjection };
+function fieldsHide(str: string, start: number, end: number): string {
+  if (start < 0 || end > str.length || start >= end) {
+    return str;
+  }
+
+  return str.slice(0, start) + "•".repeat(end - start) + str.slice(end);
+}
+
+export { sanitizeSQLInjection, sanitizeXSSInjection, fieldsHide };

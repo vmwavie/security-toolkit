@@ -1,3 +1,4 @@
+import { passwordComplexity } from "./feats/checkers";
 import {
   generateSecret,
   decodeSecret,
@@ -23,6 +24,13 @@ class SecurityToolKit {
     validateUserCode: (secret: string, code: string) => boolean;
   };
 
+  checkersMethods: {
+    passwordComplexity: (password: string) => {
+      strength: "weak" | "medium" | "strong";
+      message: string;
+    };
+  };
+
   constructor(
     { TOTP = { timeStep: 30, window: 30 } }: { TOTP?: { timeStep: number; window: number } } = {},
     { HOTP = { counter: 0, window: 1 } }: { HOTP?: { counter: number; window: number } } = {}
@@ -44,8 +52,13 @@ class SecurityToolKit {
         HOTP_validateUserCode(secret, code, HOTP.counter, HOTP.window),
     };
 
+    const checkersMethods = {
+      passwordComplexity: (password: string) => passwordComplexity(password),
+    };
+
     this.totpMethods = totpMethods;
     this.hotpMethods = hotpMethods;
+    this.checkersMethods = checkersMethods;
   }
 }
 
