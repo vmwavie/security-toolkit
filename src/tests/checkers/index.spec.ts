@@ -38,9 +38,9 @@ describe("checkers", () => {
       expect(validateEmail.isValid).toBe(false);
     });
 
-    // validEmails.map(async (value: string) => {
-    //   const validateEmail = await toolkit.checkersMethods.emailIsValid(value);
-    //   expect(validateEmail.isValid).toBe(true);
-    // });
+    validEmails.map(async (value: string) => {
+      const validateEmail = await toolkit.checkersMethods.emailIsValid(value);
+      expect(validateEmail.isValid).toBe(true);
+    });
   });
 });

@@ -160,9 +160,7 @@
     "wepack-cli": "^0.0.1-security"
   },
   "dependencies": {
-    "20": "^3.1.9",
     "axios": "^1.7.7",
-    "node-fetch": "^3.3.2",
     "vm-browserify": "^1.1.2"
   }
 }
