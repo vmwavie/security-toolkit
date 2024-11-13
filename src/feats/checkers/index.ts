@@ -1,3 +1,5 @@
+import { loadEmailBlackList } from "../../helpers/validations/black_lists";
+
 function passwordComplexity(password: string): {
   strength: "weak" | "medium" | "strong";
   message: string;
@@ -37,4 +39,30 @@ function passwordComplexity(password: string): {
   };
 }
 
-export { passwordComplexity };
+async function emailIsValid(email: string): Promise<{
+  isValid: boolean;
+  trust: number;
+}> {
+  if (!/^[\w.-]+@([\w-]+\.)+[\w-]{2,4}$/.test(email)) {
+    return {
+      isValid: false,
+      trust: 0,
+    };
+  }
+
+  const cachedEmailBlackList = await loadEmailBlackList();
+
+  if (cachedEmailBlackList.has(email.split("@")[1])) {
+    return {
+      isValid: false,
+      trust: 0.5,
+    };
+  }
+
+  return {
+    isValid: true,
+    trust: 1,
+  };
+}
+
+export { passwordComplexity, emailIsValid };

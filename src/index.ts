@@ -1,4 +1,4 @@
-import { passwordComplexity } from "./feats/checkers";
+import { emailIsValid, passwordComplexity } from "./feats/checkers";
 import {
   generateSecret,
   decodeSecret,
@@ -29,6 +29,7 @@ class SecurityToolKit {
       strength: "weak" | "medium" | "strong";
       message: string;
     };
+    emailIsValid: (email: string) => Promise<{ isValid: boolean; trust: number }>;
   };
 
   constructor(
@@ -54,6 +55,7 @@ class SecurityToolKit {
 
     const checkersMethods = {
       passwordComplexity: (password: string) => passwordComplexity(password),
+      emailIsValid: async (email: string) => await emailIsValid(email),
     };
 
     this.totpMethods = totpMethods;
