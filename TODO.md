@@ -19,5 +19,5 @@
   [x] FAKE EMAIL BLACKLIST ( like a temp-mail )
   [-] IP ADDRESS TRACKER ( for track the ip address of the user )
   [-] DATA ENCRYPTION
-  [-] DEVICE FIGERPRINTING ( generate a id using the user device information )
+  [x] DEVICE FIGERPRINTING ( generate a id using the user device information )
   [-] Host Status Checker
