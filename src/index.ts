@@ -1,3 +1,4 @@
+import { generateDeviceDataLogger } from "./feats/loggers";
 import { emailIsValid, passwordComplexity } from "./feats/checkers";
 import {
   generateSecret,
@@ -32,6 +33,19 @@ class SecurityToolKit {
     emailIsValid: (email: string) => Promise<{ isValid: boolean; trust: number }>;
   };
 
+  loggerMethods: {
+    generateDeviceDataLogger: () => Promise<{
+      ip: string;
+      userAgent: string;
+      geolocation: {
+        long: string | void;
+        lat: string | void;
+      };
+      isIncognito: boolean;
+      isMalicious: number;
+    }>;
+  };
+
   constructor(
     { TOTP = { timeStep: 30, window: 30 } }: { TOTP?: { timeStep: number; window: number } } = {},
     { HOTP = { counter: 0, window: 1 } }: { HOTP?: { counter: number; window: number } } = {}
@@ -58,9 +72,14 @@ class SecurityToolKit {
       emailIsValid: async (email: string) => await emailIsValid(email),
     };
 
+    const loggerMethods = {
+      generateDeviceDataLogger: async () => await generateDeviceDataLogger(),
+    };
+
     this.totpMethods = totpMethods;
     this.hotpMethods = hotpMethods;
     this.checkersMethods = checkersMethods;
+    this.loggerMethods = loggerMethods;
   }
 }
 
