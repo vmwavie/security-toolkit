@@ -1,4 +1,4 @@
-import { generateDeviceDataLogger } from "./feats/loggers";
+import { generateDeviceDataLogger, ipTracker } from "./feats/loggers";
 import { emailIsValid, passwordComplexity } from "./feats/checkers";
 import {
   generateSecret,
@@ -44,6 +44,17 @@ class SecurityToolKit {
       isIncognito: boolean;
       isMalicious: number;
     }>;
+    ipTracker: (ip: string) => Promise<{
+      ip: string;
+      geolocation: {
+        long: string | void;
+        lat: string | void;
+      };
+      hostname: string | void;
+      city: string | void;
+      region: string | void;
+      country: string | void;
+    }>;
   };
 
   constructor(
@@ -74,6 +85,7 @@ class SecurityToolKit {
 
     const loggerMethods = {
       generateDeviceDataLogger: async () => await generateDeviceDataLogger(),
+      ipTracker: async (ip: string) => await ipTracker(ip),
     };
 
     this.totpMethods = totpMethods;
