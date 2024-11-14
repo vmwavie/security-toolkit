@@ -5,7 +5,7 @@
   [-] BIOMETRIC AUTHENTICATION
 
 - SESSION MANAGEMENT
-  [-] USER DATA LOG ( log the informations of the user device )
+  [x] USER DATA LOG ( log the informations of the user device )
   [-] SUSPICIOUS ACTIVITY DETECTION ( check the user login history, if have much changes in the short time, block the user account )
 
 - FIELDS PROTECTION
@@ -19,5 +19,5 @@
   [x] FAKE EMAIL BLACKLIST ( like a temp-mail )
   [-] IP ADDRESS TRACKER ( for track the ip address of the user )
   [-] DATA ENCRYPTION
-  [x] DEVICE FIGERPRINTING ( generate a id using the user device information )
+  [-] DEVICE FIGERPRINTING ( generate a id using the user device information )
   [-] Host Status Checker
