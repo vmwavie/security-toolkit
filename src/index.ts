@@ -59,7 +59,8 @@ class SecurityToolKit {
 
   constructor(
     { TOTP = { timeStep: 30, window: 30 } }: { TOTP?: { timeStep: number; window: number } } = {},
-    { HOTP = { counter: 0, window: 1 } }: { HOTP?: { counter: number; window: number } } = {}
+    { HOTP = { counter: 0, window: 1 } }: { HOTP?: { counter: number; window: number } } = {},
+    { API_KEYS = { ipInfoKey: "" } }: { API_KEYS?: { ipInfoKey: string } } = {}
   ) {
     this.generateSecret = () => generateSecret();
     this.decodeSecret = (secret: string) => decodeSecret(secret);
@@ -85,7 +86,7 @@ class SecurityToolKit {
 
     const loggerMethods = {
       generateDeviceDataLogger: async () => await generateDeviceDataLogger(),
-      ipTracker: async (ip: string) => await ipTracker(ip),
+      ipTracker: async (ip: string) => await ipTracker(ip, API_KEYS.ipInfoKey),
     };
 
     this.totpMethods = totpMethods;

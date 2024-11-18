@@ -1,6 +1,10 @@
 import path from "path";
 import fs from "fs";
 import axios from "axios";
+import { exec } from "child_process";
+import { promisify } from "util";
+
+const execPromise = promisify(exec);
 
 async function isMaliciousUser(userAgent: string): Promise<number> {
   let score = 0;
@@ -94,8 +98,13 @@ async function generateDeviceDataLogger(): Promise<{
     isMalicious: await isMaliciousUser(navigator.userAgent),
   };
 }
-async function ipTracker(_ip: string = ""): Promise<{
+
+async function ipTracker(
+  ip: string = "",
+  ipInfoKey: string
+): Promise<{
   ip: string;
+  privacy: string | void;
   geolocation: {
     long: string | void;
     lat: string | void;
@@ -105,12 +114,8 @@ async function ipTracker(_ip: string = ""): Promise<{
   region: string | void;
   country: string | void;
 }> {
-  let ip: string = _ip;
-
-  if (_ip === "") {
-    const ipFetch = await axios.get("https://api.ipify.org?format=json");
-    const ipData = ipFetch.data;
-    ip = ipData.ip;
+  if (!ip) {
+    throw new Error("Invalid IP address.");
   }
 
   let geolocation = { long: "unknown", lat: "unknown" };
@@ -118,27 +123,11 @@ async function ipTracker(_ip: string = ""): Promise<{
   let city = "unknown";
   let region = "unknown";
   let country = "unknown";
+  let privacy = "unknown";
 
-  // to-do convert to axios
-  const ipInfoFetch = async (url: string) => {
-    return new Promise<string>((resolve, reject) => {
-      const exec = require("child_process").exec;
-      exec(`curl -s ${url}`, (error: any, stdout: any, stderr: any) => {
-        if (error) {
-          reject(`Error: ${stderr}`);
-        } else {
-          resolve(stdout);
-        }
-      });
-    });
-  };
-
-  const ipInfoData = JSON.parse(await ipInfoFetch(`https://ipinfo.io/${ip}/json`));
-
-  if (ipInfoData.loc) {
-    const [lat, long] = ipInfoData.loc.split(",");
-    geolocation = { long, lat };
-  }
+  const curlCommand = `curl -s -H "Authorization: Bearer ${ipInfoKey}" https://ipinfo.io/${ip}`;
+  const { stdout } = await execPromise(curlCommand);
+  const ipInfoData = JSON.parse(stdout);
 
   if (ipInfoData.loc) {
     const [lat, long] = ipInfoData.loc.split(",");
@@ -149,9 +138,11 @@ async function ipTracker(_ip: string = ""): Promise<{
   city = ipInfoData.city || "unknown";
   region = ipInfoData.region || "unknown";
   country = ipInfoData.country || "unknown";
+  privacy = ipInfoData.privacy || "unknown";
 
   return {
-    ip: ip,
+    ip,
+    privacy,
     geolocation,
     hostname,
     city,

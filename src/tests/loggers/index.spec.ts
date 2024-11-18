@@ -88,54 +88,11 @@ describe("ipTracker", () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    toolkit = new SecurityToolKit({}, {});
-  });
-
-  describe("in a browser environment", () => {
-    beforeAll(() => {
-      jest
-        .spyOn(global.navigator.geolocation, "getCurrentPosition")
-        .mockImplementation((success, error) => {
-          success({
-            coords: {
-              latitude: 47.316,
-              longitude: 18.7904,
-              accuracy: 0,
-              altitude: null,
-              altitudeAccuracy: null,
-              heading: null,
-              speed: null,
-              toJSON: () => ({
-                latitude: 47.316,
-                longitude: 18.7904,
-                accuracy: 0,
-                altitude: null,
-                altitudeAccuracy: null,
-                heading: null,
-                speed: null,
-              }),
-            },
-            timestamp: Date.now(),
-          } as GeolocationPosition);
-        });
-    });
-    it("should return IP and geolocation from the browser", async () => {
-      (axios.get as jest.Mock).mockResolvedValueOnce(mockIpResponse);
-
-      const result = await toolkit.loggerMethods.ipTracker("");
-
-      expect(result).toEqual({
-        ip: "31.46.213.198",
-        geolocation: {
-          lat: "47.3160",
-          long: "18.7904",
-        },
-        hostname: "1f2ed5c6.dsl.pool.telekom.hu",
-        city: "Martonvásár",
-        region: "Fejér",
-        country: "HU",
-      });
-    });
+    toolkit = new SecurityToolKit(
+      {},
+      {},
+      { API_KEYS: { ipInfoKey: process.env.IPINFO_API_KEY as string } }
+    );
   });
 
   describe("in a Node.js environment", () => {
@@ -154,7 +111,7 @@ describe("ipTracker", () => {
         .mockResolvedValueOnce(mockIpResponse)
         .mockResolvedValueOnce(mockIpInfoResponse);
 
-      const result = await toolkit.loggerMethods.ipTracker("");
+      const result = await toolkit.loggerMethods.ipTracker("31.46.213.198");
 
       expect(result).toEqual({
         ip: "31.46.213.198",
@@ -166,6 +123,7 @@ describe("ipTracker", () => {
         city: "Martonvásár",
         region: "Fejér",
         country: "HU",
+        privacy: "unknown",
       });
     });
   });
