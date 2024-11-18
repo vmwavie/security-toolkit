@@ -9,6 +9,7 @@ import {
   TOTP_generateCode,
   TOTP_validateUserCode,
 } from "./feats/otp/index";
+import { fieldsHide, sanitizeSQLInjection, sanitizeXSSInjection } from "./feats/sanitization";
 
 class SecurityToolKit {
   generateSecret: () => string;
@@ -57,6 +58,18 @@ class SecurityToolKit {
     }>;
   };
 
+  sanitizerMethods: {
+    sanitizeXSSInjection: (input: string) => {
+      sanitized: string;
+      isDangerous: boolean;
+    };
+    sanitizeSQLInjection: (input: string) => {
+      sanitized: string;
+      isDangerous: boolean;
+    };
+    fieldsHide: (str: string, start: number, end: number) => string;
+  };
+
   constructor(
     { TOTP = { timeStep: 30, window: 30 } }: { TOTP?: { timeStep: number; window: number } } = {},
     { HOTP = { counter: 0, window: 1 } }: { HOTP?: { counter: number; window: number } } = {},
@@ -89,10 +102,17 @@ class SecurityToolKit {
       ipTracker: async (ip: string) => await ipTracker(ip, API_KEYS.ipInfoKey),
     };
 
+    const sanitizerMethods = {
+      sanitizeSQLInjection: (input: string) => sanitizeSQLInjection(input),
+      sanitizeXSSInjection: (input: string) => sanitizeXSSInjection(input),
+      fieldsHide: (str: string, start: number, end: number) => fieldsHide(str, start, end),
+    };
+
     this.totpMethods = totpMethods;
     this.hotpMethods = hotpMethods;
     this.checkersMethods = checkersMethods;
     this.loggerMethods = loggerMethods;
+    this.sanitizerMethods = sanitizerMethods;
   }
 }
 

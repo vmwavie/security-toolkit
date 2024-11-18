@@ -1,5 +1,5 @@
-import SANITIZATION_PATTERNS from "helpers/validations/patterns";
-import VALIDATIONS_REGEX from "helpers/validations/regex";
+import SANITIZATION_PATTERNS from "../../../helpers/validations/patterns";
+import VALIDATIONS_REGEX from "../../../helpers/validations/regex";
 
 function sanitizeXSSInjection(input: string): {
   sanitized: string;
@@ -12,7 +12,7 @@ function sanitizeXSSInjection(input: string): {
     };
   }
 
-  if (!VALIDATIONS_REGEX.ALPHABET_REGEX.test(input)) {
+  if (VALIDATIONS_REGEX.JS_REGEX.test(input)) {
     return {
       sanitized: "",
       isDangerous: true,
@@ -27,7 +27,7 @@ function sanitizeXSSInjection(input: string): {
 
   return {
     sanitized: sanitizedInput,
-    isDangerous: false,
+    isDangerous: input !== sanitizedInput ? true : false,
   };
 }
 
@@ -35,13 +35,6 @@ function sanitizeSQLInjection(input: string): {
   sanitized: string;
   isDangerous: boolean;
 } {
-  if (sanitizeXSSInjection(input).isDangerous) {
-    return {
-      sanitized: "",
-      isDangerous: true,
-    };
-  }
-
   if (VALIDATIONS_REGEX.SQL_FILTER_REGEX.test(input)) {
     return {
       sanitized: "",
