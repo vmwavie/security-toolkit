@@ -7,8 +7,30 @@ describe("totp", () => {
     toolkit = new SecurityToolKit({ TOTP: { timeStep: 30, window: 30 } });
   });
 
+  test("should generate a secret", () => {
+    const secret = toolkit.totpMethods.generateSecret();
+    expect(typeof secret).toBe("string");
+    expect(secret).toHaveLength(24);
+  });
+
+  test("should decode a secret", () => {
+    const secret = toolkit.totpMethods.generateSecret();
+    const decoded = toolkit.totpMethods.decodeSecret(secret);
+    expect(decoded).toBeInstanceOf(Buffer);
+  });
+
+  test("should generate a QR code URI", () => {
+    const secret = toolkit.totpMethods.generateSecret();
+    const uri = toolkit.totpMethods.generateQRCodeURI(secret, "Company", "User");
+    expect(typeof uri).toBe("string");
+    expect(uri.startsWith("otpauth://")).toBe(true);
+    expect(uri).toContain("Company");
+    expect(uri).toContain("User");
+    expect(uri).toContain("secret");
+  });
+
   test("should generate a code", () => {
-    const secret = toolkit.generateSecret();
+    const secret = toolkit.totpMethods.generateSecret();
     const code = toolkit.totpMethods.generateCode(secret);
 
     expect(typeof code).toBe("string");
@@ -16,7 +38,7 @@ describe("totp", () => {
   });
 
   test("should generate and validate a code", () => {
-    const secret = toolkit.generateSecret();
+    const secret = toolkit.totpMethods.generateSecret();
     const code = toolkit.totpMethods.generateCode(secret);
 
     expect(typeof code).toBe("string");
