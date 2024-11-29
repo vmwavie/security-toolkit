@@ -23,7 +23,7 @@ describe("totp", () => {
     const secret = toolkit.totpMethods.generateSecret();
     const uri = toolkit.totpMethods.generateQRCodeURI(secret, "Company", "User");
     expect(typeof uri).toBe("string");
-    expect(uri.startsWith("otpauth://")).toBe(true);
+    expect(uri.startsWith("otpauth://totp")).toBe(true);
     expect(uri).toContain("Company");
     expect(uri).toContain("User");
     expect(uri).toContain("secret");

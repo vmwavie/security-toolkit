@@ -455,7 +455,7 @@ class SecurityToolKit {
       generateSecret: () => generateSecret(),
       decodeSecret: (secret: string) => decodeSecret(secret),
       generateQRCodeURI: (secret: string, companyName: string, userName: string) =>
-        generateQRCodeURI(secret, companyName, userName),
+        generateQRCodeURI(secret, companyName, userName, "totp"),
       generateCode: (secret: string) => TOTP_generateCode(secret, TOTP.timeStep, false),
       validateUserCode: (secret: string, code: string) =>
         TOTP_validateUserCode(secret, code, TOTP.timeStep, TOTP.window),
@@ -465,7 +465,7 @@ class SecurityToolKit {
       generateSecret: () => generateSecret(),
       decodeSecret: (secret: string) => decodeSecret(secret),
       generateQRCodeURI: (secret: string, companyName: string, userName: string) =>
-        generateQRCodeURI(secret, companyName, userName),
+        generateQRCodeURI(secret, companyName, userName, "hotp"),
       generateCode: (secret: string) => HOTP_generateCode(secret, HOTP.counter),
       validateUserCode: (secret: string, code: string) =>
         HOTP_validateUserCode(secret, code, HOTP.counter, HOTP.window),

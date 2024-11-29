@@ -17,8 +17,13 @@ function decodeSecret(secret: string): Buffer {
   return decode(secret);
 }
 
-function generateQRCodeURI(secret: string, companyName: string, userName: string): string {
-  return `otpauth://totp/${userName}?secret=${secret}&issuer=${companyName}`;
+function generateQRCodeURI(
+  secret: string,
+  companyName: string,
+  userName: string,
+  method: "hotp" | "totp"
+): string {
+  return `otpauth://${method}/${userName}?secret=${secret}&issuer=${companyName}`;
 }
 
 export { generateSecret, decodeSecret, generateQRCodeURI };
