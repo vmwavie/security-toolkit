@@ -1,4 +1,5 @@
 const path = require("path");
+const webpack = require("webpack");
 
 const isProduction = process.env.NODE_ENV == "production";
 
@@ -24,9 +25,14 @@ const commonConfig = {
       stream: require.resolve("stream-browserify"),
       fs: false,
       child_process: false,
+      util: require.resolve("util/"),
     },
   },
-  plugins: [],
+  plugins: [
+    new webpack.ProvidePlugin({
+      process: "process/browser",
+    }),
+  ],
 };
 
 const commonJSConfig = {
