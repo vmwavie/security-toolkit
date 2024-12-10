@@ -78,8 +78,8 @@ describe("ipTracker", () => {
     data: {
       loc: "47.3160,18.7904",
       hostname: "1f2ed5c6.dsl.pool.telekom.hu",
-      city: "Martonvásár",
-      region: "Fejér",
+      city: "Füzesabony",
+      region: "Heves County",
       country: "HU",
     },
   };
@@ -116,12 +116,12 @@ describe("ipTracker", () => {
       expect(result).toEqual({
         ip: "31.46.213.198",
         geolocation: {
-          lat: "47.3160",
-          long: "18.7904",
+          lat: "47.7500",
+          long: "20.4167",
         },
         hostname: "1f2ed5c6.dsl.pool.telekom.hu",
-        city: "Martonvásár",
-        region: "Fejér",
+        city: "Füzesabony",
+        region: "Heves County",
         country: "HU",
         privacy: "unknown",
       });
