@@ -1,4 +1,5 @@
 const path = require("path");
+const webpack = require("webpack");
 
 const isProduction = process.env.NODE_ENV == "production";
 
@@ -18,53 +19,62 @@ const commonConfig = {
   resolve: {
     extensions: [".ts", ".js"],
     fallback: {
-      crypto: require.resolve("crypto-browserify"),
-      vm: require.resolve("vm-browserify"),
-      stream: require.resolve("stream-browserify"),
-      path: require.resolve("path-browserify"),
-      child_process: require.resolve("child_process-browserify"),
+      crypto: false,
+      stream: false,
+      path: false,
       fs: false,
+      child_process: false,
     },
   },
-  plugins: [],
+  plugins: [
+    new webpack.DefinePlugin({
+      "process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV),
+    }),
+    new webpack.ProvidePlugin({
+      process: "process/browser",
+    }),
+  ],
 };
 
-const commonJSConfig = {
+const nodeConfig = {
   ...commonConfig,
+  target: "node",
   output: {
     chunkFilename: "[name].js",
     filename: "[name].js",
     path: path.resolve(__dirname, "dist"),
-    libraryTarget: "umd",
-    globalObject: "this",
-    library: {
-      type: "commonjs2",
-    },
+    libraryTarget: "commonjs2",
   },
 };
 
-const esmConfig = {
+const browserConfig = {
   ...commonConfig,
+  target: "web",
   output: {
-    chunkFilename: "[name].esm.js",
-    filename: "[name].esm.js",
+    chunkFilename: "[name].browser.js",
+    filename: "[name].browser.js",
     path: path.resolve(__dirname, "dist"),
-    library: {
-      type: "module",
-    },
+    libraryTarget: "umd",
+    globalObject: "this",
   },
-  experiments: {
-    outputModule: true,
+  resolve: {
+    ...commonConfig.resolve,
+    fallback: {
+      ...commonConfig.resolve.fallback,
+      crypto: require.resolve("crypto-browserify"),
+      stream: require.resolve("stream-browserify"),
+      path: require.resolve("path-browserify"),
+    },
   },
 };
 
 module.exports = () => {
   if (isProduction) {
-    commonJSConfig.mode = "production";
-    esmConfig.mode = "production";
+    nodeConfig.mode = "production";
+    browserConfig.mode = "production";
   } else {
-    commonJSConfig.mode = "development";
-    esmConfig.mode = "development";
+    nodeConfig.mode = "development";
+    browserConfig.mode = "development";
   }
-  return [commonJSConfig, esmConfig];
+  return [nodeConfig, browserConfig];
 };
