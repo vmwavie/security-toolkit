@@ -1,3 +1,4 @@
 src/
 .eslintrc.js
 .prettierrc
+._*

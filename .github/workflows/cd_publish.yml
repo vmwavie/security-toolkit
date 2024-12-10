@@ -37,6 +37,8 @@ jobs:
         run: npm i
 
       - name: 🧪 Testing Security Toolkit
+        env:
+          IPINFO_API_KEY: ${{ secrets.IPINFO_API_KEY }}
         run: npm run test
 
       - name: 🚀 Building Security Toolkit
