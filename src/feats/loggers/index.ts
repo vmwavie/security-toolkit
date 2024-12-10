@@ -2,9 +2,6 @@ import path from "path";
 import fs from "fs";
 import axios from "axios";
 import { exec } from "child_process";
-import { promisify } from "util";
-
-const execPromise = promisify(exec);
 
 async function isMaliciousUser(userAgent: string): Promise<number> {
   let score = 0;
@@ -126,29 +123,38 @@ async function ipTracker(
   let privacy = "unknown";
 
   const curlCommand = `curl -s -H "Authorization: Bearer ${ipInfoKey}" https://ipinfo.io/${ip}`;
-  const { stdout } = await execPromise(curlCommand);
-  const ipInfoData = JSON.parse(stdout);
 
-  if (ipInfoData.loc) {
-    const [lat, long] = ipInfoData.loc.split(",");
-    geolocation = { long, lat };
-  }
+  return new Promise((resolve, reject) => {
+    exec(curlCommand, (error, stdout, stderr) => {
+      if (error) {
+        reject(error);
+        return;
+      }
 
-  hostname = ipInfoData.hostname || "unknown";
-  city = ipInfoData.city || "unknown";
-  region = ipInfoData.region || "unknown";
-  country = ipInfoData.country || "unknown";
-  privacy = ipInfoData.privacy || "unknown";
+      const ipInfoData = JSON.parse(stdout);
 
-  return {
-    ip,
-    privacy,
-    geolocation,
-    hostname,
-    city,
-    region,
-    country,
-  };
+      if (ipInfoData.loc) {
+        const [lat, long] = ipInfoData.loc.split(",");
+        geolocation = { long, lat };
+      }
+
+      hostname = ipInfoData.hostname || "unknown";
+      city = ipInfoData.city || "unknown";
+      region = ipInfoData.region || "unknown";
+      country = ipInfoData.country || "unknown";
+      privacy = ipInfoData.privacy || "unknown";
+
+      resolve({
+        ip,
+        privacy,
+        geolocation,
+        hostname,
+        city,
+        region,
+        country,
+      });
+    });
+  });
 }
 
 export { generateDeviceDataLogger, ipTracker };
