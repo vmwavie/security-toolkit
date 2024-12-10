@@ -25,12 +25,13 @@ const commonConfig = {
       path: require.resolve("path-browserify"),
       fs: false,
       child_process: false,
-      util: require.resolve("util/"),
+      util: require.resolve("util"),
     },
   },
   plugins: [
     new webpack.ProvidePlugin({
       process: "process/browser",
+      promisify: ["util", "promisify"],
     }),
   ],
 };
