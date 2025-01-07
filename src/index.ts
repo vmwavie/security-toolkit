@@ -1,4 +1,4 @@
-import { generateDeviceDataLogger, ipTracker } from "./feats/loggers";
+import { generateDeviceDataLogger, hostResolver, ipTracker } from "./feats/loggers";
 import { emailIsValid, passwordComplexity } from "./feats/checkers";
 import {
   generateSecret,
@@ -377,6 +377,37 @@ class SecurityToolKit {
       region: string | void;
       country: string | void;
     }>;
+
+    /**
+     * Resolves a given hostname to its IP address using the DNS protocol.
+     *
+     * This asynchronous method attempts to resolve the specified hostname to an IP address.
+     * It performs multiple attempts based on the provided retry count and waits for a specified
+     * timeout duration between each attempt.
+     *
+     * @param {string} hostname - The hostname to resolve.
+     * @param {number} retries - The number of attempts to resolve the hostname.
+     * @param {number} timeout - The timeout in milliseconds for each request to resolve the hostname.
+     * @returns {Promise<Object>} A promise that resolves to an object containing the resolution status.
+     * @property {string|null} error_message - An error message if the resolution fails, otherwise null.
+     * @property {boolean} status - Indicates whether the hostname was successfully resolved.
+     *
+     * @example
+     * const result = await securityToolKit.loggerMethods.hostResolver("example.com", 3, 1000);
+     * console.log(result);
+     * // Output: { error_message: null, status: true }
+     *
+     * @note This method is useful for network diagnostics and troubleshooting.
+     * @note Ensure that the DNS server is reachable and responsive to avoid unnecessary retries.
+     */
+    hostResolver: (
+      hostname: string,
+      retries: number,
+      timeout: number
+    ) => Promise<{
+      error_message: string | null;
+      status: boolean;
+    }>;
   };
 
   /**
@@ -479,6 +510,8 @@ class SecurityToolKit {
     const loggerMethods = {
       generateDeviceDataLogger: async () => await generateDeviceDataLogger(),
       ipTracker: async (ip: string) => await ipTracker(ip, API_KEYS.ipInfoKey),
+      hostResolver: async (hostname: string, retries: number, timeout: number) =>
+        await hostResolver(hostname, retries, timeout),
     };
 
     const sanitizerMethods = {
