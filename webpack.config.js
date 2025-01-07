@@ -24,7 +24,7 @@ const commonConfig = {
       path: false,
       fs: false,
       child_process: false,
-      assert: require.resolve("assert/"),
+      assert: require.resolve("assert"),
       util: require.resolve("util/"),
       net: false,
       os: require.resolve("os-browserify/browser"),
