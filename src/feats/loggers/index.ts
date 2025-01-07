@@ -1,3 +1,4 @@
+import dns from "dns";
 import path from "path";
 import fs from "fs";
 import axios from "axios";
@@ -157,4 +158,50 @@ async function ipTracker(
   });
 }
 
-export { generateDeviceDataLogger, ipTracker };
+async function hostResolver(
+  hostname: string,
+  retries: number,
+  timeout: number
+): Promise<{
+  status: boolean;
+  error_message: string;
+}> {
+  let error_message = "";
+
+  if (!hostname || !retries || !timeout) {
+    return {
+      status: false,
+      error_message: "Invalid parameters provided.",
+    };
+  }
+
+  for (let i = 0; i < retries; i++) {
+    try {
+      await new Promise((resolve, reject) => {
+        dns.resolve(hostname, err => {
+          if (err) {
+            error_message = err.message;
+            reject(err);
+          } else {
+            resolve(null);
+          }
+        });
+      });
+      return {
+        status: true,
+        error_message: "",
+      };
+    } catch (err) {
+      if (i < retries - 1) {
+        await new Promise(resolve => setTimeout(resolve, timeout));
+      }
+    }
+  }
+
+  return {
+    status: false,
+    error_message: error_message,
+  };
+}
+
+export { generateDeviceDataLogger, ipTracker, hostResolver };

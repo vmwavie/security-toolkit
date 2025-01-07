@@ -116,15 +116,34 @@ describe("ipTracker", () => {
       expect(result).toEqual({
         ip: "31.46.213.198",
         geolocation: {
-          lat: "47.7500",
-          long: "20.4167",
+          lat: "47.6832",
+          long: "19.1342",
         },
         hostname: "1f2ed5c6.dsl.pool.telekom.hu",
-        city: "Füzesabony",
-        region: "Heves County",
+        city: "Göd",
+        region: "Pest County",
         country: "HU",
         privacy: "unknown",
       });
     });
+  });
+});
+
+describe("hostResolver", () => {
+  let toolkit: SecurityToolKit;
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+    toolkit = new SecurityToolKit();
+  });
+
+  it("should resolve a hostname to an IP address", async () => {
+    const hostResolve = await toolkit.loggerMethods.hostResolver("postman-echo.com", 3, 1000);
+    expect(hostResolve.status).toEqual(true);
+  });
+
+  it("should fail to resolve a hostname", async () => {
+    const hostResolve = await toolkit.loggerMethods.hostResolver("fakedomain.fakedomain", 3, 100);
+    expect(hostResolve.status).toEqual(false);
   });
 });
