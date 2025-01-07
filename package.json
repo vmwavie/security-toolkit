@@ -10,7 +10,7 @@
     "dist/"
   ],
   "scripts": {
-    "build": "webpack --config webpack.config.js",
+    "build": "webpack --config webpack.config.js  --mode=production",
     "build:dev": "webpack --config webpack.config.js --mode=development",
     "build:prod": "webpack --config webpack.config.js --mode=production",
     "start": "ts-node src/tests/index.ts",

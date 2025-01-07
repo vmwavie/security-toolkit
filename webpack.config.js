@@ -1,7 +1,7 @@
 const path = require("path");
 const webpack = require("webpack");
 
-const isProduction = process.env.NODE_ENV == "production";
+const isProduction = process.env.NODE_ENV === "production";
 
 const commonConfig = {
   entry: {
@@ -24,6 +24,12 @@ const commonConfig = {
       path: false,
       fs: false,
       child_process: false,
+      assert: require.resolve("assert/"),
+      util: require.resolve("util/"),
+      net: false,
+      os: require.resolve("os-browserify/browser"),
+      dgram: false,
+      vm: require.resolve("vm-browserify"),
     },
   },
   plugins: [
@@ -34,6 +40,9 @@ const commonConfig = {
       process: "process/browser",
     }),
   ],
+  stats: {
+    errorDetails: true,
+  },
 };
 
 const nodeConfig = {
