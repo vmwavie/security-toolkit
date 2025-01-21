@@ -50,7 +50,7 @@ const defaultRegexValidators: RegexValidators = {
     return maxStreak;
   },
   checkCommonPasswords: password => {
-    const commonPasswords = ["123456", "password", "123456789", "qwerty", "abc123"];
+    const commonPasswords = require("../../database/common-passwords.json");
     return commonPasswords.includes(password);
   },
 };
