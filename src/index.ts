@@ -1,13 +1,17 @@
-import { generateDeviceDataLogger, hostResolver, ipTracker } from "./feats/loggers";
-import { emailIsValid, passwordComplexity } from "./feats/checkers";
 import {
-  generateSecret,
-  decodeSecret,
-  generateQRCodeURI,
+  PasswordComplexityInputProps,
+  PasswordComplexityReturnsProps,
+} from "feats/checkers/passwordValidator";
+import { emailIsValid, validatePassword } from "./feats/checkers";
+import { generateDeviceDataLogger, hostResolver, ipTracker } from "./feats/loggers";
+import {
   HOTP_generateCode,
   HOTP_validateUserCode,
   TOTP_generateCode,
   TOTP_validateUserCode,
+  decodeSecret,
+  generateQRCodeURI,
+  generateSecret,
 } from "./feats/otp/index";
 import { fieldsHide, sanitizeSQLInjection, sanitizeXSSInjection } from "./feats/sanitization";
 
@@ -230,48 +234,53 @@ class SecurityToolKit {
      * - Presence of uppercase and lowercase letters
      * - Inclusion of numbers
      * - Use of special characters
+     * - Maximum allowed consecutive identical characters
+     * - Avoidance of common passwords
      *
-     * @param {string} password - The password string to evaluate.
-     * @returns {Object} An object containing the strength assessment and a descriptive message.
+     * @param {PasswordComplexityInputProps} props - Contains the password and optional validation parameters.
+     * @returns {PasswordComplexityReturnsProps} An object containing the strength assessment and a descriptive message.
      * @property {('weak'|'medium'|'strong')} strength - The evaluated strength of the password:
-     *   - 'weak': Easily guessable or commonly used passwords.
-     *   - 'medium': Passwords with a good mix of characters but could be stronger.
-     *   - 'strong': Highly secure passwords meeting all or most complexity criteria.
-     * @property {string} message - A descriptive message about the password's strength,
-     *                              including suggestions for improvement if applicable.
+     *   - 'weak': Password is easily guessable or does not meet most criteria.
+     *   - 'medium': Password meets some criteria but could be stronger.
+     *   - 'strong': Password meets all or most complexity criteria.
+     * @property {string} message - A descriptive message about the password's strength and suggestions for improvement.
      *
      * @example
-     * const result = passwordComplexity("P@ssw0rd123");
+     * const result = securityToolKit.checkersMethods.passwordComplexity({
+     *   password: "P@ssw0rd123",
+     *   validation: {
+     *     minChars: 8,
+     *     maxChars: 20,
+     *     minLetters: 2,
+     *     minUpperCase: 1,
+     *     minSymbols: 1,
+     *     minNumbers: 1,
+     *     maxConsecutiveChars: 2,
+     *     avoidCommonPasswords: true,
+     *   },
+     * });
      * console.log(result);
-     * // Output: { strength: "medium", message: "Good start! Consider adding more special characters." }
+     * // Output: { strength: "strong", message: "Password is valid." }
      *
-     * @throws {Error} If the input is not a string or is empty.
+     * @throws {Error} If the input is invalid or missing required fields.
      */
-    passwordComplexity: (password: string) => {
-      strength: "weak" | "medium" | "strong";
-      message: string;
-    };
+    validatePassword: (props: PasswordComplexityInputProps) => PasswordComplexityReturnsProps;
 
     /**
      * Validates an email address and assesses its trustworthiness.
      *
      * This method performs a two-step validation:
      * 1. Checks the email format for syntactic correctness.
-     * 2. Verifies the email domain against the dmachard/blocklist-domains blacklist on GitHub.
-     *
-     * The blacklist helps identify potentially suspicious or commonly abused email domains.
+     * 2. Verifies the email domain against a blacklist of known suspicious domains.
      *
      * @param {string} email - The email address to validate.
      * @returns {Promise<Object>} A promise that resolves to an object containing validation results.
-     * @property {boolean} isValid - Indicates whether the email is syntactically valid and not on the blacklist.
-     * @property {number} trust - A numeric value from 0 to 100 representing the trustworthiness of the email.
-     *                            Higher values indicate higher trustworthiness.
+     * @property {boolean} isValid - True if the email passes all validation checks.
+     * @property {number} trust - A numeric value (0 to 100) indicating the email's trust level.
      *
      * @example
-     * const result = await emailIsValid("user@example.com");
+     * const result = await securityToolKit.checkersMethods.emailIsValid("user@example.com");
      * console.log(result); // { isValid: true, trust: 85 }
-     *
-     * @see {@link https://github.com/dmachard/blocklist-domains} for more information on the used blacklist.
      */
     emailIsValid: (email: string) => Promise<{ isValid: boolean; trust: number }>;
   };
@@ -503,7 +512,7 @@ class SecurityToolKit {
     };
 
     const checkersMethods = {
-      passwordComplexity: (password: string) => passwordComplexity(password),
+      validatePassword: (props: PasswordComplexityInputProps) => validatePassword(props),
       emailIsValid: async (email: string) => await emailIsValid(email),
     };
 
