@@ -1,6 +1,6 @@
 {
   "name": "security-toolkit",
-  "version": "1.1.7",
+  "version": "1.0.0",
   "description": "A library for implementing multiples security measures in a nodejs application",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
