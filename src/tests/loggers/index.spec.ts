@@ -116,12 +116,12 @@ describe("ipTracker", () => {
       expect(result).toEqual({
         ip: "31.46.213.198",
         geolocation: {
-          lat: "47.6832",
-          long: "19.1342",
+          lat: "47.2094",
+          long: "18.6361",
         },
         hostname: "1f2ed5c6.dsl.pool.telekom.hu",
-        city: "Göd",
-        region: "Pest County",
+        city: "Gárdony",
+        region: "Fejér",
         country: "HU",
         privacy: "unknown",
       });

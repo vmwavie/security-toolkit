@@ -167,7 +167,6 @@
     "assert": "^2.1.0",
     "axios": "^1.7.7",
     "child_process-browserify": "^0.0.1",
-    "dns": "^0.2.2",
     "dotenv": "^16.4.5"
   }
 }

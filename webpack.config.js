@@ -29,6 +29,7 @@ const commonConfig = {
       net: false,
       os: require.resolve("os-browserify/browser"),
       dgram: false,
+      dns: false,
       vm: require.resolve("vm-browserify"),
     },
   },
